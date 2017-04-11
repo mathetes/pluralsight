@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
+import {connect} from 'react-redux';
+import * as courseActions from '../../actions/courseActions';
 
 class CoursesPage extends React.Component {
 		constructor(props, context) {
 		super(props, context);
 
 		this.state = {
-			course: { title: "" }
+			course: { title: null }
 		};		
 
 		this.onTitleChange = this.onTitleChange.bind(this);
@@ -19,7 +21,11 @@ class CoursesPage extends React.Component {
 	}
 
 	onClickSave() {
-		alert('Saving ${this.state.course.title}');
+		this.props.createCourse(this.state.course);
+	}
+
+	courseRow (course, index) {
+		return <div key={index}>{course.title}</div>
 	}
 
 	render() {
@@ -27,47 +33,39 @@ class CoursesPage extends React.Component {
 			<div>
 				<div className="row">
 					<h1>Courses</h1>
+					{this.props.courses.map(this.courseRow)}
 					<h2>Add Course</h2>
 					<input
 						type="text"
 						onChange={this.onTitleChange}
 						value={this.state.course.title} />
 					<input
-						className="btn btn-success"
+						className="btn"
 						type="submit"
 						value="Save"
 						onClick={this.onClickSave} />
-				</div>
-				<div className="col-lg-4">
-					<img src="http://lorempixel.com/240/120/sports/" />
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-				<div className="col-lg-4">
-					<img src="http://lorempixel.com/240/120/sports/" />
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-				<div className="col-lg-4">
-					<img src="http://lorempixel.com/240/120/sports/" />
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 				</div>
 			</div>
 		);
 	}
 }
 
-export default CoursesPage;
+CoursesPage.propTypes = {
+	dispatch: PropTypes.func.isRecuired,
+    courses: PropTypes.array.isRecuired,
+    createCourse: PropTypes.func.isRecuired
+};
+
+function mapStateToProps(state, ownProps) {
+	return {
+		courses: state.courses
+	};
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		createCourse: course => dispatch(courseActions.createCourse(course))
+	};
+}
+
+export default connect (mapStateToProps, mapDispatchToProps) (CoursesPage);
