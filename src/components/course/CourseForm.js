@@ -21,7 +21,7 @@ const CourseForm = ({course, allAuthors, onSave, onChange, loading, errors}) => 
                 options={allAuthors}
                 onChange={onChange} error={errors.authorId}/>
 
-            <Textlnput
+            <TextInput
                 name="category"
                 label="Category"
                 value={course.category}
@@ -34,6 +34,7 @@ const CourseForm = ({course, allAuthors, onSave, onChange, loading, errors}) => 
                 value={course.length}
                 onChange={onChange}
                 error={errors.length}/>
+
             <input
             type="submit"
             disabled={loading}

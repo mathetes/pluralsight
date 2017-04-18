@@ -9,33 +9,40 @@ class ManageCoursePage extends React.Component {
         super(props, context);
 
         this.state = {
-            course: Object.assign({}, this.props.course),
+            course: Object.assign({}, props.course),
             errors: {}
         };
     }
 
         render() {
             return (
-                <div>
-                    <h1>Manage Course</h1>
-                    <CourseForm
-                        allAuthors={[]}
-                        course={this.state.course}
-                        errors={this.state.errors}
-                    />
-                </div>
+                <CourseForm
+                    allAuthors={this.props.authors}
+                    course={this.state.course}
+                    errors={this.state.errors}
+                />
             );
         }
     }
 
-ManageCoursePage.PropTypes = {
-    course: PropTypes.object.isRequired
-    };
+ManageCoursePage.propTypes = {
+    course: PropTypes.object.isRequired,
+    authors: PropTypes.array.isRequired
+};
 
 function mapStateToProps(state, ownProps) {
-    let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''};
+    let course = {id: '', watchHref: '', title: '', authorId: '', length: '', category: ''}
+
+    const authorsFormattedForDropdown = state.authors.map(author => {
+        return {
+            value: author.id,
+            text: author.firstName + ' ' + author.lastName
+        };
+    });
+
     return {
-        course: course
+        course: course,
+        authors: authorsFormattedForDropdown
     };
 }
 
