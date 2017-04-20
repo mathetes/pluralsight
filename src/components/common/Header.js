@@ -1,4 +1,4 @@
-import React, {ProtoTypes} from 'react';
+import React, {PropTypes} from 'react';
 import { Link, IndexLink } from 'react-router';
 import LoadingDots from './LoadingDots';
 
@@ -16,7 +16,7 @@ const Header = ({loading}) => {
 };
 
 Header.propTypes = {
-	loading: ProtoTypes.bool.isRequired
+	loading: PropTypes.bool.isRequired
 };
 
 export default Header;
